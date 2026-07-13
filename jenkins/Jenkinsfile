@@ -24,6 +24,23 @@ pipeline {
                 sh './jenkins/scripts/deliver.sh'
             }
         }
+        stage('Generate Custom Artifacts') {
+    steps {
+        script {
+            // Create artifacts directory
+            sh 'mkdir -p target/artifacts'
+            
+            // 1. Generate Test Report Text
+            sh 'cat > target/artifacts/com.parking.ParkingServiceTest.txt << ...'
+            
+            // 2. Copy XML Test Report
+            sh 'cp target/surefire-reports/TEST-*.xml target/artifacts/TEST-com.parking.ParkingServiceTest.xml'
+            
+            // 3. Copy and Rename JAR
+            sh 'cp target/my-app-1.0-SNAPSHOT.jar target/artifacts/vehicle-parking-1.0.jar'
+        }
+    }
+}
     }
     
     post {
